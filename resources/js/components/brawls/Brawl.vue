@@ -1,18 +1,18 @@
 <template>
   <div>
-    <brawl-color-selected  
+    <brawl-color-selected
         :brawls="brawls"
         :showModal="showModal"
+        @closeModal="closeModal"
       >
     </brawl-color-selected>
 
     <div  @click="openModal" data-toggle="modal" data-target="#exampleModal">
-      <span class="brawlColor"
-          :style="{color: this.$store.state.color}"
-          @click="getUserById(users)"
-          v-text="`${currentUser.name}`"
-        >
-      </span>
+      <button :style="{color: this.$store.state.color}"
+              v-text="`${currentUser.name}`"
+              class="btn btn-secondary bg-dark"
+          >
+      </button>
     </div>
   </div>
 </template>
@@ -37,6 +37,9 @@
       openModal() {
         this.showModal = true;
       },
+      closeModal(value) {
+        this.showModal = value;
+      }
     },
   }
 </script>

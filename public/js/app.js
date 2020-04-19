@@ -1947,6 +1947,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     openModal: function openModal() {
       this.showModal = true;
+    },
+    closeModal: function closeModal(value) {
+      this.showModal = value;
     }
   }
 });
@@ -2001,12 +2004,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['showModal', 'brawls'],
   data: function data() {
-    return {// color: ''
+    return {
+      value: false
     };
   },
   methods: {
     colorSelected: function colorSelected(brawl) {
-      this.$store.state.color = brawl.color; // console.log(this.color);
+      this.$store.state.color = brawl.color;
+    },
+    closeModal: function closeModal() {
+      this.$emit('closeModal', this.value);
     }
   }
 });
@@ -6556,7 +6563,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".brawlColor {\n  width: 8em;\n  height: 2em;\n  padding: 0 0 0 1.5em;\n}", ""]);
+exports.push([module.i, ".modal-backdrop {\n  display: none;\n}", ""]);
 
 // exports
 
@@ -38306,7 +38313,8 @@ var render = function() {
     "div",
     [
       _c("brawl-color-selected", {
-        attrs: { brawls: _vm.brawls, showModal: _vm.showModal }
+        attrs: { brawls: _vm.brawls, showModal: _vm.showModal },
+        on: { closeModal: _vm.closeModal }
       }),
       _vm._v(" "),
       _c(
@@ -38316,15 +38324,10 @@ var render = function() {
           on: { click: _vm.openModal }
         },
         [
-          _c("span", {
-            staticClass: "brawlColor",
+          _c("button", {
+            staticClass: "btn btn-secondary bg-dark",
             style: { color: this.$store.state.color },
-            domProps: { textContent: _vm._s("" + _vm.currentUser.name) },
-            on: {
-              click: function($event) {
-                return _vm.getUserById(_vm.users)
-              }
-            }
+            domProps: { textContent: _vm._s("" + _vm.currentUser.name) }
           })
         ]
       )
@@ -38366,7 +38369,8 @@ var render = function() {
               role: "dialog",
               "aria-labelledby": "exampleModalLabel",
               "aria-hidden": "true"
-            }
+            },
+            on: { click: _vm.closeModal }
           },
           [
             _c(
@@ -38376,35 +38380,44 @@ var render = function() {
                 _c("div", { staticClass: "modal-content" }, [
                   _vm._m(0),
                   _vm._v(" "),
-                  _c("div", { staticClass: "modal-body" }, [
-                    _c(
-                      "ul",
-                      { staticClass: "list-group list-group-horizontal" },
-                      _vm._l(_vm.brawls, function(brawl, id) {
-                        return _c(
-                          "li",
-                          {
-                            key: id,
-                            staticClass: "brawlColor list-group-item",
-                            style: { background: brawl.color },
-                            on: {
-                              click: function($event) {
-                                return _vm.colorSelected(brawl)
-                              }
+                  _c(
+                    "div",
+                    { staticClass: "modal-body" },
+                    _vm._l(_vm.brawls, function(brawl, id) {
+                      return _c(
+                        "div",
+                        {
+                          key: id,
+                          staticClass: "btn-group",
+                          attrs: { role: "group", "aria-label": "..." },
+                          on: {
+                            click: function($event) {
+                              return _vm.colorSelected(brawl)
                             }
-                          },
-                          [
-                            _vm._v(
-                              "\n              " +
-                                _vm._s(brawl.color) +
-                                "\n            "
-                            )
-                          ]
-                        )
-                      }),
-                      0
-                    )
-                  ])
+                          }
+                        },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-secondary bg-dark m-2",
+                              attrs: { type: "button" }
+                            },
+                            [
+                              _c("a", {
+                                staticClass: "p-4",
+                                style: { color: brawl.color },
+                                domProps: {
+                                  textContent: _vm._s("" + _vm.currentUser.name)
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
                 ])
               ]
             )
@@ -38422,7 +38435,7 @@ var staticRenderFns = [
       _c(
         "h5",
         { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
-        [_vm._v("Seleccionar Color")]
+        [_vm._v("\n            Seleccionar Color\n          ")]
       ),
       _vm._v(" "),
       _c(

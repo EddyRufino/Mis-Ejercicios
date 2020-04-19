@@ -1,37 +1,37 @@
 <template>
   <div>
-    <div v-if="showModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div v-if="showModal" @click="closeModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Seleccionar Color</h5>
+            <h5 class="modal-title"
+                id="exampleModalLabel"
+              >
+              Seleccionar Color
+            </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <ul class="list-group list-group-horizontal">
-              <li class="brawlColor list-group-item" 
-                v-for="(brawl, id) in brawls"
-                :key="id"
-                :style="{background: brawl.color}"
-                @click="colorSelected(brawl)"
+            <div class="btn-group"
+                  role="group" aria-label="..."
+                  v-for="(brawl, id) in brawls"
+                  :key="id"
+                  @click="colorSelected(brawl)"
               >
-                {{ brawl.color }}
-              </li>
-            </ul>
+              <button type="button" class="btn btn-secondary bg-dark m-2">
+                <a :style="{color: brawl.color}"
+                    class="p-4"
+                    v-text="`${currentUser.name}`">
+                </a>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <ul style="list-style: none;">
-      <li class="brawlColor" :style="{background: this.$store.state.color}">
-        {{this.$store.state.color}}
-      </li>
-    </ul> -->
   </div>
-      <!-- <li class="brawlColor" :style="{background: brawl.color}">{{brawl.color}}</li> -->
 </template>
 
 <script>
@@ -39,22 +39,22 @@
     props: ['showModal', 'brawls'],
     data() {
       return {
-        // color: ''
+        value: false,
       }
     },
     methods: {
       colorSelected(brawl) {
         this.$store.state.color = brawl.color;
-        // console.log(this.color);
+      },
+      closeModal() {
+        this.$emit('closeModal', this.value);
       }
     },
   }
 </script>
 
 <style lang="scss">
-.brawlColor {
-  width: 8em;
-  height: 2em;
-  padding: 0 0 0 1.5em;
-}
+  .modal-backdrop {
+    display: none;
+  }
 </style>
