@@ -12,7 +12,7 @@ class BrawlController extends Controller
     public function index(Request $request)
     {
         $brawls = Brawl::all();
-
+        
         if ($request->wantsJson()) {
             return new BrawlCollection($brawls);
         }

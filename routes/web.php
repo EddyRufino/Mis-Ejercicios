@@ -7,6 +7,7 @@ Route::get('/', function () {
 });
 
 Route::get('brawl', 'BrawlController@index')->name('brawl.color');
+Route::get('users', 'UserController@index')->name('users.index');
 
 Auth::routes();
 

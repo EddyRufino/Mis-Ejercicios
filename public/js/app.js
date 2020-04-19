@@ -1927,8 +1927,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -38312,21 +38310,22 @@ var render = function() {
       }),
       _vm._v(" "),
       _c(
-        "ul",
+        "div",
         {
-          staticStyle: { "list-style": "none" },
           attrs: { "data-toggle": "modal", "data-target": "#exampleModal" },
           on: { click: _vm.openModal }
         },
         [
-          _c(
-            "li",
-            {
-              staticClass: "brawlColor",
-              style: { background: this.$store.state.color }
-            },
-            [_vm._v("\n      " + _vm._s(this.$store.state.color) + "\n    ")]
-          )
+          _c("span", {
+            staticClass: "brawlColor",
+            style: { color: this.$store.state.color },
+            domProps: { textContent: _vm._s("" + _vm.currentUser.name) },
+            on: {
+              click: function($event) {
+                return _vm.getUserById(_vm.users)
+              }
+            }
+          })
         ]
       )
     ],
@@ -51686,10 +51685,14 @@ module.exports = function(module) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
+/* harmony import */ var _mixins_auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mixins/auth */ "./resources/js/mixins/auth.js");
+/* harmony import */ var _mixins_auth__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_mixins_auth__WEBPACK_IMPORTED_MODULE_1__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
+
+Vue.mixin(_mixins_auth__WEBPACK_IMPORTED_MODULE_1___default.a);
 Vue.component('brawl', __webpack_require__(/*! ./components/brawls/Brawl.vue */ "./resources/js/components/brawls/Brawl.vue")["default"]);
 Vue.component('brawl-color-selected', __webpack_require__(/*! ./components/brawls/BrawlColorSelected.vue */ "./resources/js/components/brawls/BrawlColorSelected.vue")["default"]);
 var app = new Vue({
@@ -51748,15 +51751,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!**************************************************!*\
   !*** ./resources/js/components/brawls/Brawl.vue ***!
   \**************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Brawl_vue_vue_type_template_id_7bff4b62_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Brawl.vue?vue&type=template&id=7bff4b62&scoped=true& */ "./resources/js/components/brawls/Brawl.vue?vue&type=template&id=7bff4b62&scoped=true&");
 /* harmony import */ var _Brawl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Brawl.vue?vue&type=script&lang=js& */ "./resources/js/components/brawls/Brawl.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Brawl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Brawl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -51786,7 +51788,7 @@ component.options.__file = "resources/js/components/brawls/Brawl.vue"
 /*!***************************************************************************!*\
   !*** ./resources/js/components/brawls/Brawl.vue?vue&type=script&lang=js& ***!
   \***************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51901,30 +51903,52 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/mixins/auth.js":
+/*!*************************************!*\
+  !*** ./resources/js/mixins/auth.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var user = document.head.querySelector('meta[name="user"]');
+module.exports = {
+  computed: {
+    currentUser: function currentUser() {
+      return JSON.parse(user.content);
+    },
+    isAuthenticated: function isAuthenticated() {
+      return !!user.content;
+    },
+    guest: function guest() {
+      return !this.isAuthenticated;
+    }
+  }
+};
+
+/***/ }),
+
 /***/ "./resources/js/store/index.js":
 /*!*************************************!*\
   !*** ./resources/js/store/index.js ***!
   \*************************************/
-/*! exports provided: default */
+/*! exports provided: ADD_USERS, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_USERS", function() { return ADD_USERS; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var ADD_USERS = 'ADD_USERS';
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     color: '#e55934'
   },
-  mutations: {
-    CHANGE_COLOR: function CHANGE_COLOR(state, color) {
-      state.color = color;
-    }
-  },
+  mutations: {},
   actions: {},
   getters: {}
 }));

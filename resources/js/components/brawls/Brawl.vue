@@ -3,19 +3,17 @@
     <brawl-color-selected  
         :brawls="brawls"
         :showModal="showModal"
-    >
-    </brawl-color-selected>
-    <!-- <brawl-color-selected 
-        v-for="(brawl, id) in brawls"
-        :key="id"
-        :brawl="brawl"
       >
-    </brawl-color-selected> -->
-    <ul style="list-style: none;" @click="openModal" data-toggle="modal" data-target="#exampleModal">
-      <li class="brawlColor" :style="{background: this.$store.state.color}">
-        {{this.$store.state.color}}
-      </li>
-    </ul>
+    </brawl-color-selected>
+
+    <div  @click="openModal" data-toggle="modal" data-target="#exampleModal">
+      <span class="brawlColor"
+          :style="{color: this.$store.state.color}"
+          @click="getUserById(users)"
+          v-text="`${currentUser.name}`"
+        >
+      </span>
+    </div>
   </div>
 </template>
 
@@ -27,11 +25,9 @@
         showModal: false,
       }
     },
-
     created() {
       this.getBrawls();
     },
-
     methods: {
       getBrawls() {
         axios.get('/brawl').then(res => {
@@ -40,7 +36,7 @@
       },
       openModal() {
         this.showModal = true;
-      }
+      },
     },
   }
 </script>

@@ -36,4 +36,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function brawls()
+    {
+        return $this->belongsToMany('App\Brawl', 'brawl_user', 'user_id', 'brawl_id');
+    }
 }

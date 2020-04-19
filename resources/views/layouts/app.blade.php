@@ -6,6 +6,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{-- Pasar el user autenticado a vue --}}
+    <meta name="user" content="{{ Auth::user() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
