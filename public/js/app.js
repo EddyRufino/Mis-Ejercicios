@@ -1927,22 +1927,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      brawls: [],
-      showModal: false
+      users: null,
+      showBtnUp: true,
+      showBtnDown: false,
+      showModal: false,
+      showImageUp: true,
+      showImageDown: false
     };
   },
-  created: function created() {
-    this.getBrawls();
+  mounted: function mounted() {
+    var _this = this;
+
+    EventBus.$on('close-btnUp', function (status) {
+      _this.showBtnUp = status;
+      _this.showBtnDown = !status;
+    }), EventBus.$on('close-imageUp', function (status) {
+      _this.showImageUp = status;
+      _this.showImageDown = !status;
+    });
   },
   methods: {
-    getBrawls: function getBrawls() {
-      var _this = this;
+    getUsers: function getUsers() {
+      var _this2 = this;
 
-      axios.get('/brawl').then(function (res) {
-        _this.brawls = res.data.data;
+      axios.get('/users').then(function (res) {
+        _this2.users = res.data.data;
       });
     },
     openModal: function openModal() {
@@ -1951,6 +1985,9 @@ __webpack_require__.r(__webpack_exports__);
     closeModal: function closeModal(value) {
       this.showModal = value;
     }
+  },
+  created: function created() {
+    this.getUsers();
   }
 });
 
@@ -2001,19 +2038,209 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+var user = document.head.querySelector('meta[name="user"]');
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['showModal', 'brawls'],
+  props: ['showModalColor', 'brawls'],
   data: function data() {
     return {
-      value: false
+      value: false,
+      id: '',
+      color: ''
     };
   },
   methods: {
     colorSelected: function colorSelected(brawl) {
-      this.$store.state.color = brawl.color;
+      var _this = this;
+
+      var id = this.currentUser.id;
+      var url = 'users/' + id;
+      axios.put(url, {
+        id: id,
+        color: brawl.color
+      }).then(function (res) {
+        _this.$store.commit('USER_COLOR', brawl); // this.$store.dispatch('getUser', brawl);
+
+      })["catch"](function (err) {
+        console.log(err.response.data);
+      });
+    },
+    closeModalColor: function closeModalColor() {
+      this.$emit('closeModalColor', this.value);
+      EventBus.$emit('close-btnUp', this.value);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['showModalImage', 'brawls'],
+  data: function data() {
+    return {
+      value: false,
+      id: '',
+      image: ''
+    };
+  },
+  methods: {
+    imageSelected: function imageSelected(brawl) {
+      var _this = this;
+
+      var id = this.currentUser.id;
+      var url = 'users/' + id;
+      axios.put(url, {
+        id: id,
+        image: brawl.image
+      }).then(function (res) {
+        _this.$store.commit('USER_IMAGE', brawl); // this.$store.dispatch('getUser', brawl);
+
+      })["catch"](function (err) {
+        console.log(err.response.data);
+      });
+    },
+    closeModalImage: function closeModalImage() {
+      this.$emit('closeModalImage', this.value);
+      EventBus.$emit('close-imageUp', this.value);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/ChooseImageColor.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/brawls/ChooseImageColor.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['showModal'],
+  data: function data() {
+    return {
+      brawls: [],
+      value: false,
+      showModalColor: false,
+      showModalImage: false
+    };
+  },
+  created: function created() {
+    this.getBrawls();
+  },
+  methods: {
+    getBrawls: function getBrawls() {
+      var _this = this;
+
+      axios.get('/brawls').then(function (res) {
+        _this.brawls = res.data.data;
+      });
+    },
+    openModalColor: function openModalColor() {
+      this.showModalColor = true;
+    },
+    closeModalColor: function closeModalColor(value) {
+      this.showModalColor = value;
     },
     closeModal: function closeModal() {
       this.$emit('closeModal', this.value);
+    },
+    openModalImage: function openModalImage() {
+      this.showModalImage = true;
+    },
+    closeModalImage: function closeModalImage(value) {
+      this.showModalImage = value;
     }
   }
 });
@@ -6547,6 +6774,25 @@ __webpack_require__.r(__webpack_exports__);
 
 })));
 //# sourceMappingURL=bootstrap.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/brawls/Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".centrarImagen[data-v-7bff4b62] {\n  position: relative;\n  width: 100px;\n  top: 0.5em;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  margin: auto;\n}", ""]);
+
+// exports
 
 
 /***/ }),
@@ -37680,6 +37926,36 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/brawls/Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/BrawlColorSelected.vue?vue&type=style&index=0&lang=scss&":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/brawls/BrawlColorSelected.vue?vue&type=style&index=0&lang=scss& ***!
@@ -38312,23 +38588,56 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("brawl-color-selected", {
-        attrs: { brawls: _vm.brawls, showModal: _vm.showModal },
+      _c("choose-image-color", {
+        attrs: { showModal: _vm.showModal },
         on: { closeModal: _vm.closeModal }
       }),
       _vm._v(" "),
       _c(
         "div",
         {
-          attrs: { "data-toggle": "modal", "data-target": "#exampleModal" },
+          staticClass: "card text-center",
+          staticStyle: { width: "12rem" },
+          attrs: { "data-toggle": "modal", "data-target": "#staticBackdrop" },
           on: { click: _vm.openModal }
         },
         [
-          _c("button", {
-            staticClass: "btn btn-secondary bg-dark",
-            style: { color: this.$store.state.color },
-            domProps: { textContent: _vm._s("" + _vm.currentUser.name) }
-          })
+          _vm.showImageUp
+            ? _c("img", {
+                staticClass: "card-img-top centrarImagen",
+                staticStyle: { width: "118px" },
+                attrs: {
+                  src: this.users[this.currentUser.id - 1].image,
+                  alt: "..."
+                }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.showImageDown
+            ? _c("img", {
+                staticClass: "card-img-top centrarImagen",
+                staticStyle: { width: "118px" },
+                attrs: { src: this.$store.state.image, alt: "..." }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _vm.showBtnUp
+              ? _c("button", {
+                  staticClass: "btn btn-secondary bg-dark",
+                  style: { color: this.users[this.currentUser.id - 1].color },
+                  domProps: { textContent: _vm._s("" + _vm.currentUser.name) }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showBtnDown
+              ? _c("button", {
+                  staticClass: "btn btn-secondary bg-dark",
+                  style: { color: this.$store.state.color },
+                  domProps: { textContent: _vm._s("" + _vm.currentUser.name) }
+                })
+              : _vm._e()
+          ])
         ]
       )
     ],
@@ -38358,7 +38667,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.showModal
+    _vm.showModalColor
       ? _c(
           "div",
           {
@@ -38370,7 +38679,7 @@ var render = function() {
               "aria-labelledby": "exampleModalLabel",
               "aria-hidden": "true"
             },
-            on: { click: _vm.closeModal }
+            on: { click: _vm.closeModalColor }
           },
           [
             _c(
@@ -38382,7 +38691,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "modal-body" },
+                    { staticClass: "modal-body text-center" },
                     _vm._l(_vm.brawls, function(brawl, id) {
                       return _c(
                         "div",
@@ -38407,6 +38716,7 @@ var render = function() {
                               _c("a", {
                                 staticClass: "p-4",
                                 style: { color: brawl.color },
+                                attrs: { name: "color" },
                                 domProps: {
                                   textContent: _vm._s("" + _vm.currentUser.name)
                                 }
@@ -38451,6 +38761,242 @@ var staticRenderFns = [
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=template&id=378cc637&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=template&id=378cc637&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.showModalImage
+      ? _c(
+          "div",
+          {
+            staticClass: "modal fade",
+            attrs: {
+              id: "exampleModal",
+              tabindex: "-1",
+              role: "dialog",
+              "aria-labelledby": "exampleModalLabel",
+              "aria-hidden": "true"
+            },
+            on: { click: _vm.closeModalImage }
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "modal-body text-center" },
+                    _vm._l(_vm.brawls, function(brawl, id) {
+                      return _c(
+                        "div",
+                        {
+                          key: id,
+                          staticClass: "btn-group",
+                          attrs: { role: "group", "aria-label": "..." },
+                          on: {
+                            click: function($event) {
+                              return _vm.imageSelected(brawl)
+                            }
+                          }
+                        },
+                        [
+                          _c("img", {
+                            attrs: { src: brawl.image, width: "100px" }
+                          })
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ])
+              ]
+            )
+          ]
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Seleccione Imagen")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/ChooseImageColor.vue?vue&type=template&id=5451b0a6&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/brawls/ChooseImageColor.vue?vue&type=template&id=5451b0a6&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.showModal
+      ? _c(
+          "div",
+          {
+            staticClass: "modal fade",
+            attrs: {
+              id: "staticBackdrop",
+              "data-backdrop": "static",
+              tabindex: "-1",
+              role: "dialog",
+              "aria-labelledby": "staticBackdropLabel",
+              "aria-hidden": "true"
+            }
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c("h5", {
+                      staticClass: "modal-title",
+                      style: { color: this.$store.state.color },
+                      attrs: { id: "staticBackdropLabel" },
+                      domProps: {
+                        textContent: _vm._s("" + _vm.currentUser.name)
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "modal-body text-center" },
+                    [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            type: "button",
+                            "data-toggle": "modal",
+                            "data-target": "#exampleModal"
+                          },
+                          on: { click: _vm.openModalColor }
+                        },
+                        [_vm._v("\n          Color del nombre\n        ")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            type: "button",
+                            "data-toggle": "modal",
+                            "data-target": "#exampleModal"
+                          },
+                          on: { click: _vm.openModalImage }
+                        },
+                        [_vm._v("\n          Imagen del nombre\n        ")]
+                      ),
+                      _vm._v(" "),
+                      _c("brawl-color-selected", {
+                        attrs: {
+                          brawls: _vm.brawls,
+                          showModalColor: _vm.showModalColor
+                        },
+                        on: { closeModalColor: _vm.closeModalColor }
+                      }),
+                      _vm._v(" "),
+                      _c("brawl-image-selected", {
+                        attrs: {
+                          brawls: _vm.brawls,
+                          showModalImage: _vm.showModalImage
+                        },
+                        on: { closeModalImage: _vm.closeModalImage }
+                      })
+                    ],
+                    1
+                  )
+                ])
+              ]
+            )
+          ]
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true
@@ -51703,11 +52249,14 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+window.EventBus = new Vue();
 
 
 Vue.mixin(_mixins_auth__WEBPACK_IMPORTED_MODULE_1___default.a);
 Vue.component('brawl', __webpack_require__(/*! ./components/brawls/Brawl.vue */ "./resources/js/components/brawls/Brawl.vue")["default"]);
+Vue.component('choose-image-color', __webpack_require__(/*! ./components/brawls/ChooseImageColor.vue */ "./resources/js/components/brawls/ChooseImageColor.vue")["default"]);
 Vue.component('brawl-color-selected', __webpack_require__(/*! ./components/brawls/BrawlColorSelected.vue */ "./resources/js/components/brawls/BrawlColorSelected.vue")["default"]);
+Vue.component('brawl-image-selected', __webpack_require__(/*! ./components/brawls/BrawlImageSelected.vue */ "./resources/js/components/brawls/BrawlImageSelected.vue")["default"]);
 var app = new Vue({
   el: '#app',
   store: _store__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -51771,7 +52320,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Brawl_vue_vue_type_template_id_7bff4b62_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Brawl.vue?vue&type=template&id=7bff4b62&scoped=true& */ "./resources/js/components/brawls/Brawl.vue?vue&type=template&id=7bff4b62&scoped=true&");
 /* harmony import */ var _Brawl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Brawl.vue?vue&type=script&lang=js& */ "./resources/js/components/brawls/Brawl.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _Brawl_vue_vue_type_style_index_0_id_7bff4b62_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true& */ "./resources/js/components/brawls/Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -51779,7 +52330,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _Brawl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _Brawl_vue_vue_type_template_id_7bff4b62_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _Brawl_vue_vue_type_template_id_7bff4b62_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -51808,6 +52359,22 @@ component.options.__file = "resources/js/components/brawls/Brawl.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Brawl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Brawl.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/Brawl.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Brawl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/brawls/Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/brawls/Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true& ***!
+  \************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Brawl_vue_vue_type_style_index_0_id_7bff4b62_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/Brawl.vue?vue&type=style&index=0&id=7bff4b62&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Brawl_vue_vue_type_style_index_0_id_7bff4b62_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Brawl_vue_vue_type_style_index_0_id_7bff4b62_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Brawl_vue_vue_type_style_index_0_id_7bff4b62_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Brawl_vue_vue_type_style_index_0_id_7bff4b62_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Brawl_vue_vue_type_style_index_0_id_7bff4b62_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -51916,6 +52483,144 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/brawls/BrawlImageSelected.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/brawls/BrawlImageSelected.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BrawlImageSelected_vue_vue_type_template_id_378cc637_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BrawlImageSelected.vue?vue&type=template&id=378cc637&scoped=true& */ "./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=template&id=378cc637&scoped=true&");
+/* harmony import */ var _BrawlImageSelected_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BrawlImageSelected.vue?vue&type=script&lang=js& */ "./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BrawlImageSelected_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BrawlImageSelected_vue_vue_type_template_id_378cc637_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BrawlImageSelected_vue_vue_type_template_id_378cc637_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "378cc637",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/brawls/BrawlImageSelected.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BrawlImageSelected_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./BrawlImageSelected.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BrawlImageSelected_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=template&id=378cc637&scoped=true&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=template&id=378cc637&scoped=true& ***!
+  \**********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BrawlImageSelected_vue_vue_type_template_id_378cc637_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BrawlImageSelected.vue?vue&type=template&id=378cc637&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/BrawlImageSelected.vue?vue&type=template&id=378cc637&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BrawlImageSelected_vue_vue_type_template_id_378cc637_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BrawlImageSelected_vue_vue_type_template_id_378cc637_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/brawls/ChooseImageColor.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/brawls/ChooseImageColor.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ChooseImageColor_vue_vue_type_template_id_5451b0a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ChooseImageColor.vue?vue&type=template&id=5451b0a6&scoped=true& */ "./resources/js/components/brawls/ChooseImageColor.vue?vue&type=template&id=5451b0a6&scoped=true&");
+/* harmony import */ var _ChooseImageColor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ChooseImageColor.vue?vue&type=script&lang=js& */ "./resources/js/components/brawls/ChooseImageColor.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ChooseImageColor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ChooseImageColor_vue_vue_type_template_id_5451b0a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ChooseImageColor_vue_vue_type_template_id_5451b0a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "5451b0a6",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/brawls/ChooseImageColor.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/brawls/ChooseImageColor.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/brawls/ChooseImageColor.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChooseImageColor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ChooseImageColor.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/ChooseImageColor.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChooseImageColor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/brawls/ChooseImageColor.vue?vue&type=template&id=5451b0a6&scoped=true&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/brawls/ChooseImageColor.vue?vue&type=template&id=5451b0a6&scoped=true& ***!
+  \********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChooseImageColor_vue_vue_type_template_id_5451b0a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ChooseImageColor.vue?vue&type=template&id=5451b0a6&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/brawls/ChooseImageColor.vue?vue&type=template&id=5451b0a6&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChooseImageColor_vue_vue_type_template_id_5451b0a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChooseImageColor_vue_vue_type_template_id_5451b0a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/mixins/auth.js":
 /*!*************************************!*\
   !*** ./resources/js/mixins/auth.js ***!
@@ -51944,26 +52649,41 @@ module.exports = {
 /*!*************************************!*\
   !*** ./resources/js/store/index.js ***!
   \*************************************/
-/*! exports provided: ADD_USERS, default */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_USERS", function() { return ADD_USERS; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
-var ADD_USERS = 'ADD_USERS';
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); // export const ADD_USERS = 'ADD_USERS';
+
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    color: '#e55934'
+    color: null,
+    image: '/img/default.png'
   },
-  mutations: {},
-  actions: {},
-  getters: {}
+  mutations: {
+    USER_COLOR: function USER_COLOR(state, brawl) {
+      state.color = brawl.color;
+    },
+    USER_IMAGE: function USER_IMAGE(state, brawl) {
+      state.image = brawl.image;
+    }
+  },
+  actions: {// login({ dispatch }) {
+    //   return dispatch("getUser");
+    // },
+    // getUser({ commit }, brawl) {
+    // axios.get('/users').then(res => {
+    // commit('SET_USER', brawl);
+    // state.user = res.data;
+    // })      
+    // }
+  }
 }));
 
 /***/ }),

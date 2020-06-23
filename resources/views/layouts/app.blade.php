@@ -20,6 +20,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.1.1/trix.css">
+    @trixassets
+    @yield('style')
+    @stack('styles')
 </head>
 <body>
     <div id="app">
@@ -66,6 +71,9 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+                                    <a class="dropdown-item" href="{{ route('brawl.index') }}">
+                                        Perfil
+                                    </a>
                                 </div>
                             </li>
                         @endguest
@@ -80,3 +88,5 @@
     </div>
 </body>
 </html>
+@stack('scripts')
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.1.1/trix.js"></script> --}}

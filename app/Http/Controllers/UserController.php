@@ -24,4 +24,17 @@ class UserController extends Controller
 
         return view('brawls.index', compact('brawls'));
     }
+
+    public function update(Request $request, $id)
+    {
+        // $brawls = Brawl::find($id)->update($request->all());
+        $users = User::whereId($id)->update($request->all());
+
+        return response()->json(['id' => $users]);;
+        // if ($request->wantsJson()) {
+        //     return new BrawlCollection($brawls);
+        // }
+
+        // return view('brawls.index', compact('brawls'));
+    }
 }

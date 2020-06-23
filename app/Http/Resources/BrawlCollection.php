@@ -19,6 +19,7 @@ class BrawlCollection extends ResourceCollection
                 return [
                     'id' => $element->id,
                     'color' => $element->color,
+                    'image' => $element->image,
                 ];
             })
         ];

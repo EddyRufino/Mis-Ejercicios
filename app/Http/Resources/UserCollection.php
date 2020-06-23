@@ -19,6 +19,8 @@ class UserCollection extends ResourceCollection
                 return [
                     'id' => $element->id,
                     'name' => $element->name,
+                    'color' => $element->color,
+                    'image' => $element->image,
                 ];
             })
         ];

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBrawlsTable extends Migration
+class CreatePostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateBrawlsTable extends Migration
      */
     public function up()
     {
-        Schema::create('brawls', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('color')->nullable();
-            $table->string('image')->default('/img/default.png');
+            $table->string('title');
+            $table->string('field')->nullable();
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateBrawlsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('brawls');
+        Schema::dropIfExists('posts');
     }
 }
